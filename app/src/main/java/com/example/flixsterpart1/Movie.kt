@@ -1,6 +1,5 @@
 package com.example.flixsterpart1
 
-import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -9,29 +8,17 @@ import com.google.gson.annotations.SerializedName
  * SerializedName tags MUST match the JSON response for the
  * object to correctly parse with the gson library.
  */
-class BestSellerBook {
-    @SerializedName("rank")
-    var rank = 0
-
+class Movie {
     @JvmField
     @SerializedName("title")
     var title: String? = null
 
     @JvmField
     @SerializedName("overview")
-    var author: String? = null
+    var overview: String? = null
 
     //TODO bookImageUrl
     @JvmField
     @SerializedName("poster_path")
-    var bookImageUrl: String? = null
-
-    //TODO description
-    @SerializedName("description")
-    var description: String? = null
-
-    //TODO-STRETCH-GOALS amazonUrl
-    @SerializedName("amazon_product_url")
-    var amazonUrl: String? = null
-
+    var moviePosterUrl: String? = null
 }

@@ -13,23 +13,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
-import com.example.flixsterpart1.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.Headers
-import org.json.JSONObject
 
 // --------------------------------//
 // CHANGE THIS TO BE YOUR API KEY  //
 // --------------------------------//
-//private const val API_KEY = "9Yc44yqkATrzzcCQVTegLv8FQdDylZZu"
 private const val API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
 
 /*
  * The class for the only fragment in the app, which contains the progress bar,
  * recyclerView, and performs the network calls to the NY Times API.
  */
-class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
+class MoviesFragment : Fragment(), OnListFragmentInteractionListener {
 
     /*
      * Constructing the view
@@ -38,12 +35,11 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_best_seller_books_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val progressBar = view.findViewById<View>(R.id.progress) as ContentLoadingProgressBar
         val recyclerView = view.findViewById<View>(R.id.list) as RecyclerView
         val context = view.context
         recyclerView.layoutManager = LinearLayoutManager(context)
-        // recyclerView.layoutManager = GridLayoutManager(context, 2)
         updateAdapter(progressBar, recyclerView)
         return view
     }
@@ -60,9 +56,8 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
         val params = RequestParams()
         params["api-key"] = API_KEY
 
-// Using the client, perform the HTTP request
+        // Using the client, perform the HTTP request
         client[
-                //"https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json",
                 "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed",
                 params,
                 object : JsonHttpResponseHandler()
@@ -87,13 +82,13 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
 
                         val booksRawJSON : String = json.jsonObject.get("results").toString()
                         val gson = Gson()
-                        val arrayBookType = object : TypeToken<List<BestSellerBook>>() {}.type
-                        val models : List<BestSellerBook> = gson.fromJson(booksRawJSON, arrayBookType)
-                        recyclerView.adapter = BestSellerBooksRecyclerViewAdapter(models, this@BestSellerBooksFragment)
+                        val arrayBookType = object : TypeToken<List<Movie>>() {}.type
+                        val models : List<Movie> = gson.fromJson(booksRawJSON, arrayBookType)
+                        recyclerView.adapter = MoviesRecyclerViewAdapter(models, this@MoviesFragment)
 
 
                         // Look for this in Logcat:
-                        Log.d("BestSellerBooksFragment", "response successful")
+                        Log.d("MoviesFragment", "response successful")
                     }
 
 
@@ -112,7 +107,7 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
 
                         // If the error is not null, log it!
                         t?.message?.let {
-                            Log.e("BestSellerBooksFragment", errorResponse)
+                            Log.e("MoviesFragment", errorResponse)
                         }
                     }
                 }]
@@ -123,7 +118,7 @@ class BestSellerBooksFragment : Fragment(), OnListFragmentInteractionListener {
     /*
      * What happens when a particular book is clicked.
      */
-    override fun onItemClick(item: BestSellerBook) {
+    override fun onItemClick(item: Movie) {
         Toast.makeText(context, "test: " + item.title, Toast.LENGTH_LONG).show()
     }
 
